@@ -1,0 +1,27 @@
+@import url('https://fonts.googleapis.com/css2?family=Indie+Flower&display=swap');
+
+body {
+    font-family: 'Indie Flower', cursive;
+    background-color: rgb(127, 127, 127);
+}
+
+#messages {
+    margin-top: 2rem;
+}
+
+.message {
+    margin: 0;
+    font-size: 3rem;
+    line-height: .8;
+}
+
+input {
+    font-family: inherit;
+    width: 60%;
+    font-size: 2rem;
+}
+
+button {
+    font-family: inherit;
+    font-size: 2rem;
+}
