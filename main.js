@@ -18,11 +18,14 @@ async function main() {
 
 
     async function loadQuestion() {
-        contractWithSigner.generateQuestion();
+        
         num1 = await contract.num1();
         num2 = await contract.num2();
         operator = await contract.operator();
+        operator = Number(operator);
         correctAnswer = await contract.correctAnswer();
+        correctAnswer = Number(correctAnswer);
+        console.log(correctAnswer);
         emoji = await contract.emoji();
         console.log(num1, num2, operator, correctAnswer, emoji);
 
@@ -33,23 +36,36 @@ async function main() {
         resultElement.textContent = "";
         const emojiElement = document.getElementById("emoji");
         emojiElement.textContent = "";
-        
     }
 
-    contract.on("NewQuestion", (num1, num2, operator, correctAnswer, emoji) => {
-        const questionElement = document.getElementById("question");
-        questionElement.textContent = `${num1} ${operator === 0 ? '+' : '-'} ${num2} = ?`;
+    // stuff that happens when the user clicks the Submit Answer button
+        const buttonElement = document.getElementById("SubmitAnswer");
+        buttonElement.addEventListener("click", function() {
 
-        const resultElement = document.getElementById("result");
-        resultElement.textContent = "";
-        const emojiElement = document.getElementById("emoji");
-        emojiElement.textContent = "";
-        console.log(num1, num2, operator, correctAnswer, emoji);
+            // the function body for the event listener
+
+            checkAnswer();
+
+        })
+
+    // when  the transaction is successful, this event will trigger
+    contract.on("NewQuestion", (num1, num2, operator, correctAnswer, emoji) => {
+        // const questionElement = document.getElementById("question");
+        // questionElement.textContent = `${num1} ${operator === 0 ? '+' : '-'} ${num2} = ?`;
+
+        // const resultElement = document.getElementById("result");
+        // resultElement.textContent = "";
+        // const emojiElement = document.getElementById("emoji");
+        // emojiElement.textContent = "";
+        // console.log(num1, num2, operator, correctAnswer, emoji);
+
+        loadQuestion();
     })
 
     function checkAnswer() {
         const answerInput = document.getElementById("answer");
         const userAnswer = parseInt(answerInput.value, 10);
+        console.log(userAnswer);
 
         const resultElement = document.getElementById("result");
         const emojiElement = document.getElementById("emoji");
@@ -62,7 +78,7 @@ async function main() {
             emojiElement.textContent = "";
         }
 
-        // Load the next question
-        loadQuestion();
+        // Generate the next question
+        contractWithSigner.generateQuestion();
     }
 }
